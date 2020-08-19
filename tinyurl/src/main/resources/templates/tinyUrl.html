@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<!--将默认的头 <html lang="en"> 引入thymeleaf-->
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Tiny Url</title>
+</head>
+<script src="https://libs.baidu.com/jquery/2.1.4/jquery.min.js"></script>
+<script type="text/javascript">
+    function f(id) {
+        if(!confirm("确定要删除吗")) return;
+
+        $.post("/delete",{id: id},function (data) {
+            alert("删除成功")
+            window.location.reload();
+        })
+    }
+    function fn() {
+        var oldUrl=document.getElementById("ipt").value.trim();
+        if(oldUrl.length==0){alert("请输入url");return}
+        $.post("/insert",{oldUrl: oldUrl,min:$("input[name='min']").val()},function (data) {
+            document.getElementById("lb").innerText="http://127.0.0.1:8888/"+data;
+            document.getElementById("lb").href="http://127.0.0.1:8888/"+data;
+
+        })
+    }
+</script>
+<body>
+<div>
+    <input id="ipt" name="oldUrl" type="text"  placeholder="请输入oldurl"/>
+    <label >有效分钟：</label>
+    <input  name="min" type="number" value="1" placeholder="请输入有效分钟"/>
+    <button id="btn" onclick="fn()" >生成tinyURL</button>
+    <label >短连接为：</label><a id="lb"> </a>
+</div>
+<h4>有效url表：</h4>
+<table id="table2" border="1px" th:fragment="table">
+    <tr>
+        <th>id</th>
+        <th>oldUrl</th>
+        <th>newUrl</th>
+    </tr>
+    <tr th:each="url: ${urls2}">
+        <td th:text="${url.id}"></td>
+        <td th:text="${url.oldUrl}"></td>
+        <td th:text="${url.newUrl}"></td>
+    </tr>
+</table>
+<h4>所有的：</h4>
+<table id="table" border="1px" th:fragment="table">
+    <tr>
+        <th>id</th>
+        <th>oldUrl</th>
+        <th>newUrl</th>
+        <th>操作</th>
+    </tr>
+    <tr th:each="url: ${urls}">
+        <td th:text="${url.id}"></td>
+        <td th:text="${url.oldUrl}"></td>
+        <td th:text="${url.newUrl}"></td>
+        <td ><button th:onclick="|f(${url.id})|" >删除</button></td>
+    </tr>
+</table>
+</body>
+</html>

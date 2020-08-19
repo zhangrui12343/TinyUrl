@@ -1,0 +1,20 @@
+server:
+ port: 8888
+spring :
+ datasource:
+  username: root
+  password: 123456
+  url: jdbc:mysql://localhost:3306/tinyurl?useUnicode=true&characterEncoding=utf-8&useSSL=true&serverTimezone=UTC
+  driver-class-name: com.mysql.cj.jdbc.Driver
+ jpa:
+  hibernate:
+   ddl-auto: update
+  show-sql: true
+ thymeleaf:
+  cache: false
+  mode: LEGACYHTML5
+  prefix: classpath:/templates/
+  encoding: UTF-8
+  suffix: .html
+ mvc:
+  static-path-pattern: /static/**
